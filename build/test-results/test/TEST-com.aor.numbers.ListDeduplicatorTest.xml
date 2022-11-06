@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.aor.numbers.ListDeduplicatorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-11-06T22:34:38" hostname="sereno-VivoBook-ASUSLaptop-X512DA-F512DA" time="0.468">
+<testsuite name="com.aor.numbers.ListDeduplicatorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-11-06T23:02:51" hostname="sereno-VivoBook-ASUSLaptop-X512DA-F512DA" time="0.034">
   <properties/>
-  <testcase name="distinct_bug_8726()" classname="com.aor.numbers.ListDeduplicatorTest" time="0.464"/>
+  <testcase name="distinct_bug_8726()" classname="com.aor.numbers.ListDeduplicatorTest" time="0.03"/>
   <testcase name="deduplicate()" classname="com.aor.numbers.ListDeduplicatorTest" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
