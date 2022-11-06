@@ -1,6 +1,7 @@
 package com.aor.numbers;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sun.jvm.hotspot.code.Stub;
 
@@ -8,9 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ListAggregatorTest {
-    List<Integer> list = helper.helper(1,2,4,2,5);
-    List<Integer> max_bug_7263 = helper.helper(-1,-4,-5);
-    List<Integer> distinct_bug_8726 = helper.helper(1,2,4,2);
+    List<Integer> list;
+    List<Integer> max_bug_7263;
+    List<Integer> distinct_bug_8726;
+    @BeforeEach
+    public void helper(){
+        list = Arrays.asList(1,2,4,2,5);
+        max_bug_7263 = Arrays.asList(-1,-4,-5);
+        distinct_bug_8726 = Arrays.asList(1,2,4,2);
+    }
     @Test
     public void sum() {
 
@@ -47,29 +54,37 @@ public class ListAggregatorTest {
         List<Integer> list= Arrays.asList(1,2,4,2);
         class StubListDeduplicator implements GenericListDeduplicator{
             @Override
-            public List<Integer> deduplicate(List<Integer> list) {
+            public List<Integer> deduplicate(List<Integer> list,GenericListSorter sorter) {
                 return Arrays.asList(1,2,4);
             }
         }
+        ListSorter sorter= new ListSorter();
         ListAggregator aggregator = new ListAggregator();
         StubListDeduplicator deduplicator = new StubListDeduplicator();
-        int distinct = aggregator.distinct(list,deduplicator);
+        int distinct = aggregator.distinct(list,deduplicator,sorter);
 
         Assertions.assertEquals(3,distinct);
     }
     @Test
     public void distinct() {
-        List<Integer> list= Arrays.asList(1,2,4,2,5);
-        class StubListDeduplicator implements GenericListDeduplicator{
+        class stub implements GenericListDeduplicator{
             @Override
-            public List<Integer> deduplicate(List<Integer> list) {
-                return Arrays.asList(1,2,4,5);
+            public List<Integer> deduplicate(List<Integer> list, GenericListSorter list2) {
+                return Arrays.asList(1,2,4);
+            }
+        }
+        class stub_dedu implements GenericListSorter{
+            @Override
+            public List<Integer> sort(List<Integer> list){
+                return Arrays.asList(1,2,2,4);
             }
         }
         ListAggregator aggregator = new ListAggregator();
-        StubListDeduplicator deduplicator = new StubListDeduplicator();
-        int distinct = aggregator.distinct(list,deduplicator);
+        GenericListDeduplicator deduplicator = new stub();
+        GenericListSorter sorter = new stub_dedu();
+        int distinct = aggregator.distinct(distinct_bug_8726,deduplicator,sorter);
 
-        Assertions.assertEquals(4, distinct);
+        Assertions.assertEquals(3, distinct);
     }
 }
+
